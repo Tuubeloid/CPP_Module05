@@ -67,6 +67,11 @@ int main(void)
     std::string name;
     std::string gradeStr;
     int         grade;
+    std::string formName;
+    std::string formGradeStr;
+    int         formGrade;
+    std::string formExecGradeStr;
+    int         formExecGrade;
 
     std::cout << "Name the bureaucrat: " << std::endl;
     getline(std::cin, name);
@@ -99,6 +104,58 @@ int main(void)
     }
 
     checkBureaucrat(name, grade);
+
+    std::cout << "Name the form: " << std::endl;
+    getline(std::cin, formName);
+    if (std::cin.eof() == true)
+    {
+        std::cin.clear();
+        std::cout << std::endl;
+    }
+
+    std::cout << "Give grade needed to sign the form: " << std::endl;
+    getline(std::cin, formGradeStr);
+    if (std::cin.eof() == true)
+    {
+        std::cin.clear();
+        std::cout << std::endl;
+    }
+    try
+    {
+        formGrade = std::stoi(formGradeStr);
+    }
+    catch (std::invalid_argument const& e)
+    {
+        std::cerr << "Error: Invalid input. Please enter a valid number for Form grade to sign." << std::endl;
+        return 1;
+    }
+    catch (std::out_of_range const& e)
+    {
+        std::cerr << "Error: Grade out of range." << std::endl;
+        return 1;
+    }
+
+    std::cout << "Give grade needed to execute the form: " << std::endl;
+    getline(std::cin, formExecGradeStr);
+    if (std::cin.eof() == true)
+    {
+        std::cin.clear();
+        std::cout << std::endl;
+    }
+    try
+    {
+        formExecGrade = std::stoi(formExecGradeStr);
+    }
+    catch (std::invalid_argument const& e)
+    {
+        std::cerr << "Error: Invalid input. Please enter a valid number for Form grade to execute." << std::endl;
+        return 1;
+    }
+    catch (std::out_of_range const& e)
+    {
+        std::cerr << "Error: Grade out of range." << std::endl;
+        return 1;
+    }
 
 	return (0);
 }
