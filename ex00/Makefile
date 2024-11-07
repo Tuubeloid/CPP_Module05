@@ -1,6 +1,6 @@
 #include "Bureaucrat.hpp"
 C = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++11
 DEBUG_FLAGS = -g -O0
 
 NAME = Bureaucrat
