@@ -1,161 +1,69 @@
 #include "Bureaucrat.hpp"
-#include <utility>
+#include "Form.hpp"
+#include <iostream>
 
-// int main(void)
-// {
-//     Bureaucrat Bureaucrat("Bob", 145);
-//     std::cout << "Bureaucrat's name: " << Bureaucrat.getName() << "\n";
-//     std::cout << "Bureaucrat's grade: " << Bureaucrat.getGrade() << "\n";
-//     Bureaucrat.decrementGrade();
-//     Bureaucrat.decrementGrade();
-//     Bureaucrat.decrementGrade();
-//     Bureaucrat.decrementGrade();
-//     std::cout << "Bureaucrat's grade: " << Bureaucrat.getGrade() << "\n";
-//     Bureaucrat.decrementGrade();
-//     std::cout << "Bureaucrat's grade: " << Bureaucrat.getGrade() << "\n";
-//     Bureaucrat.decrementGrade();
-// }
-//
+int main() {
+    try {
+        // Create a Bureaucrat with a valid grade
+        Bureaucrat alice("Alice", 50);
+        std::cout << alice << std::endl;
 
-// int main() {
-//     try {
-//         Bureaucrat bob("Bob", 1);
-//         std::cout << bob << std::endl;
-//         bob.incrementGrade(); // This should throw an exception
-//     }
-//     catch (std::exception& e) {
-//         std::cerr << e.what() << std::endl;
-//     }
+        // Create a Form with grade requirements within range
+        Form contract("Contract A", 45, 30);
+        std::cout << contract << std::endl;
 
-//     try {
-//         Bureaucrat alice("Alice", 150);
-//         std::cout << alice << std::endl;
-//         alice.decrementGrade(); // This should throw an exception
-//     }
-//     catch (std::exception& e) {
-//         std::cerr << e.what() << std::endl;
-//     }
+        // Attempt to have Alice sign the form
+        try {
+            contract.beSigned(alice);
+        } catch (const Form::GradeTooLowException &e) {
+            std::cerr << "Exception: " << e.what() << std::endl;
+        }
 
-//     return 0;
-// }
+        // Increment Alice's grade to meet the requirement
+        alice.incrementGrade();
+        std::cout << "After incrementing Alice's grade: " << alice << std::endl;
 
-static void checkBureaucrat(std::string name, int grade)
-{
-	try
-	{
-		Bureaucrat	b(name, grade);
+        // Attempt to have Alice sign the form again
+        try {
+            contract.beSigned(alice);
+            std::cout << "Form signed status: " << (contract.getIsSigned() ? "Signed" : "Not signed") << std::endl;
+        } catch (const Form::GradeTooLowException &e) {
+            std::cerr << "Exception: " << e.what() << std::endl;
+        }
 
-		std::cout << b;
-
-        std::cout << std::endl;
-        std::cout << "Incrementing the grade: ";
-		b.incrementGrade();
-        std::cout << b << std::endl;
-
-        std::cout << "Decrementing the grade: ";
-		b.decrementGrade();
-        std::cout << b << std::endl << std::endl;
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl <<std::endl;
-	}
-}
-
-int main(void)
-{
-    std::string name;
-    std::string gradeStr;
-    int         grade;
-    std::string formName;
-    std::string formGradeStr;
-    int         formGrade;
-    std::string formExecGradeStr;
-    int         formExecGrade;
-
-    std::cout << "Name the bureaucrat: " << std::endl;
-    getline(std::cin, name);
-    if (std::cin.eof() == true)
-	{
-		std::cin.clear();
-		std::cout << std::endl;
-	}
-
-    std::cout << "Grade the bureaucrat: " << std::endl;
-    getline(std::cin, gradeStr);
-    if (std::cin.eof() == true)
-	{
-		std::cin.clear();
-		std::cout << std::endl;
-	}
-    try
-    {
-        grade = std::stoi(gradeStr);
-    }
-    catch (std::invalid_argument const& e)
-    {
-        std::cerr << "Error: Invalid input. Please enter a valid number for grade." << std::endl;
-        return 1;
-    }
-    catch (std::out_of_range const& e)
-    {
-        std::cerr << "Error: Grade out of range." << std::endl;
-        return 1;
+    } catch (const Bureaucrat::GradeTooHighException &e) {
+        std::cerr << "Bureaucrat exception: " << e.what() << std::endl;
+    } catch (const Bureaucrat::GradeTooLowException &e) {
+        std::cerr << "Bureaucrat exception: " << e.what() << std::endl;
+    } catch (const Form::GradeTooHighException &e) {
+        std::cerr << "Form exception: " << e.what() << std::endl;
+    } catch (const Form::GradeTooLowException &e) {
+        std::cerr << "Form exception: " << e.what() << std::endl;
     }
 
-    checkBureaucrat(name, grade);
-
-    std::cout << "Name the form: " << std::endl;
-    getline(std::cin, formName);
-    if (std::cin.eof() == true)
-    {
-        std::cin.clear();
-        std::cout << std::endl;
+    // Test boundary cases for grades
+    try {
+        Bureaucrat bob("Bob", 1); // Minimum grade
+        Form topSecret("Top Secret Document", 1, 1);
+        bob.incrementGrade(); // Should throw an exception (GradeTooHigh)
+    } catch (const Bureaucrat::GradeTooHighException &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    std::cout << "Give grade needed to sign the form: " << std::endl;
-    getline(std::cin, formGradeStr);
-    if (std::cin.eof() == true)
-    {
-        std::cin.clear();
-        std::cout << std::endl;
-    }
-    try
-    {
-        formGrade = std::stoi(formGradeStr);
-    }
-    catch (std::invalid_argument const& e)
-    {
-        std::cerr << "Error: Invalid input. Please enter a valid number for Form grade to sign." << std::endl;
-        return 1;
-    }
-    catch (std::out_of_range const& e)
-    {
-        std::cerr << "Error: Grade out of range." << std::endl;
-        return 1;
+    try {
+        Bureaucrat charlie("Charlie", 150); // Maximum grade
+        Form lowClearance("Low Clearance Form", 150, 150);
+        charlie.decrementGrade(); // Should throw an exception (GradeTooLow)
+    } catch (const Bureaucrat::GradeTooLowException &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    std::cout << "Give grade needed to execute the form: " << std::endl;
-    getline(std::cin, formExecGradeStr);
-    if (std::cin.eof() == true)
-    {
-        std::cin.clear();
-        std::cout << std::endl;
-    }
-    try
-    {
-        formExecGrade = std::stoi(formExecGradeStr);
-    }
-    catch (std::invalid_argument const& e)
-    {
-        std::cerr << "Error: Invalid input. Please enter a valid number for Form grade to execute." << std::endl;
-        return 1;
-    }
-    catch (std::out_of_range const& e)
-    {
-        std::cerr << "Error: Grade out of range." << std::endl;
-        return 1;
+    // Invalid Form grade (out of range)
+    try {
+        Form invalidForm("Invalid Form", 0, 150); // Should throw GradeTooHighException
+    } catch (const Form::GradeTooHighException &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-	return (0);
+    return 0;
 }

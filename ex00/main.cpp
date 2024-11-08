@@ -1,104 +1,52 @@
 #include "Bureaucrat.hpp"
 #include <utility>
 
-// int main(void)
-// {
-//     Bureaucrat Bureaucrat("Bob", 145);
-//     std::cout << "Bureaucrat's name: " << Bureaucrat.getName() << "\n";
-//     std::cout << "Bureaucrat's grade: " << Bureaucrat.getGrade() << "\n";
-//     Bureaucrat.decrementGrade();
-//     Bureaucrat.decrementGrade();
-//     Bureaucrat.decrementGrade();
-//     Bureaucrat.decrementGrade();
-//     std::cout << "Bureaucrat's grade: " << Bureaucrat.getGrade() << "\n";
-//     Bureaucrat.decrementGrade();
-//     std::cout << "Bureaucrat's grade: " << Bureaucrat.getGrade() << "\n";
-//     Bureaucrat.decrementGrade();
-// }
-//
+#include "Bureaucrat.hpp"
 
-// int main() {
-//     try {
-//         Bureaucrat bob("Bob", 1);
-//         std::cout << bob << std::endl;
-//         bob.incrementGrade(); // This should throw an exception
-//     }
-//     catch (std::exception& e) {
-//         std::cerr << e.what() << std::endl;
-//     }
+int main() {
+    try {
+        Bureaucrat john("John", 2);
+        std::cout << john << std::endl;
 
-//     try {
-//         Bureaucrat alice("Alice", 150);
-//         std::cout << alice << std::endl;
-//         alice.decrementGrade(); // This should throw an exception
-//     }
-//     catch (std::exception& e) {
-//         std::cerr << e.what() << std::endl;
-//     }
+        // Attempt to increment grade to go out of bounds
+        john.incrementGrade();
+        std::cout << "After increment: " << john << std::endl;
 
-//     return 0;
-// }
-
-static void checkBureaucrat(std::string name, int grade)
-{
-	try
-	{
-		Bureaucrat	b(name, grade);
-
-		std::cout << b;
-
-        std::cout << std::endl;
-        std::cout << "Incrementing the grade: ";
-		b.incrementGrade();
-        std::cout << b << std::endl;
-
-        std::cout << "Decrementing the grade: ";
-		b.decrementGrade();
-        std::cout << b << std::endl << std::endl;
-	}
-	catch (std::exception &e)
-	{
-		std::cout << e.what() << std::endl <<std::endl;
-	}
-}
-
-int main(void)
-{
-    std::string name;
-    std::string gradeStr;
-    int         grade;
-
-    std::cout << "Name the bureaucrat: " << std::endl;
-    getline(std::cin, name);
-    if (std::cin.eof() == true)
-	{
-		std::cin.clear();
-		std::cout << std::endl;
-	}
-
-    std::cout << "Grade the bureaucrat: " << std::endl;
-    getline(std::cin, gradeStr);
-    if (std::cin.eof() == true)
-	{
-		std::cin.clear();
-		std::cout << std::endl;
-	}
-    try
-    {
-        grade = std::stoi(gradeStr);
-    }
-    catch (std::invalid_argument const& e)
-    {
-        std::cerr << "Error: Invalid input. Please enter a valid number for grade." << std::endl;
-        return 1;
-    }
-    catch (std::out_of_range const& e)
-    {
-        std::cerr << "Error: Grade out of range." << std::endl;
-        return 1;
+        john.incrementGrade(); // This should throw GradeTooHighException
+    } catch (const Bureaucrat::GradeTooHighException &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    } catch (const Bureaucrat::GradeTooLowException &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    checkBureaucrat(name, grade);
+    try {
+        Bureaucrat jane("Jane", 149);
+        std::cout << jane << std::endl;
 
-	return (0);
+        // Attempt to decrement grade to go out of bounds
+        jane.decrementGrade();
+        std::cout << "After decrement: " << jane << std::endl;
+
+        jane.decrementGrade(); // This should throw GradeTooLowException
+    } catch (const Bureaucrat::GradeTooHighException &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    } catch (const Bureaucrat::GradeTooLowException &e) {
+        std::cerr << "Exception: " << e.what() << std::endl;
+    }
+
+    try {
+        // Attempt to create a Bureaucrat with a grade too high
+        Bureaucrat invalidHigh("InvalidHigh", 0);
+    } catch (const Bureaucrat::GradeTooHighException &e) {
+        std::cerr << "Exception when creating InvalidHigh: " << e.what() << std::endl;
+    }
+
+    try {
+        // Attempt to create a Bureaucrat with a grade too low
+        Bureaucrat invalidLow("InvalidLow", 151);
+    } catch (const Bureaucrat::GradeTooLowException &e) {
+        std::cerr << "Exception when creating InvalidLow: " << e.what() << std::endl;
+    }
+
+    return 0;
 }
