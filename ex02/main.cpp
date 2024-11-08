@@ -1,5 +1,5 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 #include <iostream>
 
 int main() {
@@ -8,14 +8,14 @@ int main() {
         Bureaucrat alice("Alice", 50);
         std::cout << alice << std::endl;
 
-        // Create a Form with grade requirements within range
-        Form contract("Contract A", 45, 30);
+        // Create a Aform with grade requirements within range
+        Aform contract("Contract A", 45, 30);
         std::cout << contract << std::endl;
 
-        // Attempt to have Alice sign the Form
+        // Attempt to have Alice sign the Aform
         try {
             contract.beSigned(alice);
-        } catch (const Form::GradeTooLowException &e) {
+        } catch (const Aform::GradeTooLowException &e) {
             std::cerr << "Exception: " << e.what() << std::endl;
         }
 
@@ -23,11 +23,11 @@ int main() {
         alice.incrementGrade();
         std::cout << "After incrementing Alice's grade: " << alice << std::endl;
 
-        // Attempt to have Alice sign the Form again
+        // Attempt to have Alice sign the Aform again
         try {
             contract.beSigned(alice);
-            std::cout << "Form signed status: " << (contract.getIsSigned() ? "Signed" : "Not signed") << std::endl;
-        } catch (const Form::GradeTooLowException &e) {
+            std::cout << "Aform signed status: " << (contract.getIsSigned() ? "Signed" : "Not signed") << std::endl;
+        } catch (const Aform::GradeTooLowException &e) {
             std::cerr << "Exception: " << e.what() << std::endl;
         }
 
@@ -35,16 +35,16 @@ int main() {
         std::cerr << "Bureaucrat exception: " << e.what() << std::endl;
     } catch (const Bureaucrat::GradeTooLowException &e) {
         std::cerr << "Bureaucrat exception: " << e.what() << std::endl;
-    } catch (const Form::GradeTooHighException &e) {
-        std::cerr << "Form exception: " << e.what() << std::endl;
-    } catch (const Form::GradeTooLowException &e) {
-        std::cerr << "Form exception: " << e.what() << std::endl;
+    } catch (const Aform::GradeTooHighException &e) {
+        std::cerr << "Aform exception: " << e.what() << std::endl;
+    } catch (const Aform::GradeTooLowException &e) {
+        std::cerr << "Aform exception: " << e.what() << std::endl;
     }
 
     // Test boundary cases for grades
     try {
         Bureaucrat bob("Bob", 1); // Minimum grade
-        Form topSecret("Top Secret Document", 1, 1);
+        Aform topSecret("Top Secret Document", 1, 1);
         bob.incrementGrade(); // Should throw an exception (GradeTooHigh)
     } catch (const Bureaucrat::GradeTooHighException &e) {
         std::cerr << "Exception: " << e.what() << std::endl;
@@ -52,16 +52,16 @@ int main() {
 
     try {
         Bureaucrat charlie("Charlie", 150); // Maximum grade
-        Form lowClearance("Low Clearance Form", 150, 150);
+        Aform lowClearance("Low Clearance Aform", 150, 150);
         charlie.decrementGrade(); // Should throw an exception (GradeTooLow)
     } catch (const Bureaucrat::GradeTooLowException &e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 
-    // Invalid Form grade (out of range)
+    // Invalid Aform grade (out of range)
     try {
-        Form invalidForm("Invalid Form", 0, 150); // Should throw GradeTooHighException
-    } catch (const Form::GradeTooHighException &e) {
+        Aform invalidAform("Invalid Aform", 0, 150); // Should throw GradeTooHighException
+    } catch (const Aform::GradeTooHighException &e) {
         std::cerr << "Exception: " << e.what() << std::endl;
     }
 
