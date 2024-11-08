@@ -1,20 +1,51 @@
 #include "Bureaucrat.hpp"
 #include "AForm.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestform.hpp"
+#include "ShrubberyCreationForm.hpp"
 #include <iostream>
 
 int main() {
     try {
         // Create a Bureaucrat with a valid grade
-        Bureaucrat alice("Alice", 50);
+        Bureaucrat alice("Alice", 136);
+        Bureaucrat bob("Bob", 46);
+        Bureaucrat charlie("Charlie", 1);
         std::cout << alice << std::endl;
+        std::cout << bob << std::endl;
 
         // Create a Aform with grade requirements within range
-        Aform contract("Contract A", 45, 30);
+        ShrubberyCreationForm contract("Shrubbery Creation Contract");
+        RobotomyRequestForm contract2("Robotomy Request Contract");
+        PresidentialPardonForm contract3("Presidential Pardon Contract");
         std::cout << contract << std::endl;
+        std::cout << contract2 << std::endl;
+        std::cout << contract3 << std::endl;
 
-        // Attempt to have Alice sign the Aform
+        // Attempt to have Alice sign the ShrubberyCreationForm
         try {
             contract.beSigned(alice);
+        } catch (const Aform::GradeTooLowException &e) {
+            std::cerr << "Exception: " << e.what() << std::endl;
+        }
+
+        // Attempt to have Alice sign the RobotomyRequestForm
+        try {
+            contract2.beSigned(alice);
+        } catch (const Aform::GradeTooLowException &e) {
+            std::cerr << "Exception: " << e.what() << std::endl;
+        }
+
+        // Attempt to have Bob sign the RobotomyRequestForm
+        try {
+            contract2.beSigned(bob);
+        } catch (const Aform::GradeTooLowException &e) {
+            std::cerr << "Exception: " << e.what() << std::endl;
+        }
+
+        // Attempt to have Charlie sign the PresidentialPardonForm
+        try {
+            contract3.beSigned(charlie);
         } catch (const Aform::GradeTooLowException &e) {
             std::cerr << "Exception: " << e.what() << std::endl;
         }
@@ -31,6 +62,10 @@ int main() {
             std::cerr << "Exception: " << e.what() << std::endl;
         }
 
+        contract.getExecuted(alice);
+        contract2.getExecuted(bob);
+        contract3.getExecuted(charlie);
+
     } catch (const Bureaucrat::GradeTooHighException &e) {
         std::cerr << "Bureaucrat exception: " << e.what() << std::endl;
     } catch (const Bureaucrat::GradeTooLowException &e) {
@@ -39,30 +74,6 @@ int main() {
         std::cerr << "Aform exception: " << e.what() << std::endl;
     } catch (const Aform::GradeTooLowException &e) {
         std::cerr << "Aform exception: " << e.what() << std::endl;
-    }
-
-    // Test boundary cases for grades
-    try {
-        Bureaucrat bob("Bob", 1); // Minimum grade
-        Aform topSecret("Top Secret Document", 1, 1);
-        bob.incrementGrade(); // Should throw an exception (GradeTooHigh)
-    } catch (const Bureaucrat::GradeTooHighException &e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
-    }
-
-    try {
-        Bureaucrat charlie("Charlie", 150); // Maximum grade
-        Aform lowClearance("Low Clearance Aform", 150, 150);
-        charlie.decrementGrade(); // Should throw an exception (GradeTooLow)
-    } catch (const Bureaucrat::GradeTooLowException &e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
-    }
-
-    // Invalid Aform grade (out of range)
-    try {
-        Aform invalidAform("Invalid Aform", 0, 150); // Should throw GradeTooHighException
-    } catch (const Aform::GradeTooHighException &e) {
-        std::cerr << "Exception: " << e.what() << std::endl;
     }
 
     return 0;

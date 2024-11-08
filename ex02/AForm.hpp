@@ -16,7 +16,7 @@ class Aform {
         Aform(std::string name, int gradeToSign, int gradeToExec);
         Aform(Aform const & src);
         Aform& operator=(Aform const & src);
-        ~Aform();
+        virtual ~Aform();
 
         std::string getName() const;
         bool getIsSigned() const;
@@ -25,6 +25,7 @@ class Aform {
 
         void beSigned(Bureaucrat & bureaucrat);
         void execute(Bureaucrat const & executor) const;
+        virtual void getExecuted(Bureaucrat const &executor) const = 0;
 
         class GradeTooHighException : public std::exception
         {

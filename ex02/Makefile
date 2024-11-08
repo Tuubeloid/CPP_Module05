@@ -3,9 +3,9 @@ C = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++11
 DEBUG_FLAGS = -g -O0
 
-NAME = Maggots
+NAME = VariousForms
 
-SRCS = main.cpp Bureaucrat.cpp AForm.cpp
+SRCS = main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp RobotomyRequestForm.cpp PresidentialPardonForm.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 
