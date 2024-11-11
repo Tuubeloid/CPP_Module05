@@ -4,6 +4,7 @@
 # include "AForm.hpp"
 # include <iostream>
 # include <fstream>
+#include <ostream>
 # include <string>
 
 class PresidentialPardonForm : public Aform

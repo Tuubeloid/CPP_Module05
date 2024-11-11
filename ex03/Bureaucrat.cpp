@@ -1,5 +1,4 @@
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
 
 Bureaucrat::Bureaucrat() : name("Unnamed"), grade(150) {}
 
@@ -25,14 +24,6 @@ Bureaucrat &Bureaucrat::operator =(const Bureaucrat &source)
 }
 
 Bureaucrat::~Bureaucrat() {}
-
-void signForm(bool isSigned, std::string formName) const
-{
-    if (isSigned)
-        std::cout << formName << " signs " << formName << std::endl;
-    else
-        std::cout << formName << " cannot sign " << formName << " because grade is too low" << std::endl;
-}
 
 std::string Bureaucrat::getName() const
 {
