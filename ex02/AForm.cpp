@@ -79,17 +79,12 @@ std::ostream &operator<<(std::ostream &os, const Aform &Aform) {
 
 void Aform::execute(Bureaucrat const &executor) const
 {
-    std::cout << "In Aform execute" << std::endl;
     if (!this->isSigned)
     {
         std::cout << "Form is not signed" << std::endl;
         return;
     }
     if (executor.getGrade() > this->gradeToExec)
-    {
-        std::cout << executor.getName() << " cannot execute " << this->name << " because his grade is too low" << std::endl;
         throw Aform::GradeTooLowException();
-    }
     this->getExecuted(executor);
-    std::cout << executor.getName() << " executes " << this->name << std::endl;
 }

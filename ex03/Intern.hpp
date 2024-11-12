@@ -1,6 +1,7 @@
 #ifndef Intern_HPP
 # define Intern_HPP
 
+# include "AForm.hpp"
 # include "ShrubberyCreationForm.hpp"
 # include "PresidentialPardonForm.hpp"
 # include "RobotomyRequestform.hpp"
@@ -14,7 +15,7 @@ class Intern {
 		Intern& operator=(Intern const & other);
 		~Intern();
 
-		Aform *makeForm(const std::string name, const std::string target); 
+		Aform *makeForm(const std::string name, const std::string target);
 };
 
 #endif

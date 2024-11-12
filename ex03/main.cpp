@@ -9,8 +9,12 @@
 int main() {
     Intern someRandomIntern;
     Aform* rrf;
+    Aform* scf;
+    Aform* ppf;
     Aform* wrongform;
     rrf = someRandomIntern.makeForm("robotomy request", "Bender");
+    scf = someRandomIntern.makeForm("shrubbery creation", "Bender");
+    ppf = someRandomIntern.makeForm("presidential pardon", "Bender");
     wrongform = someRandomIntern.makeForm("crap form", "Zoidberg");
 
     Bureaucrat b("Bender", 150);
@@ -19,8 +23,11 @@ int main() {
 
     std::cout << b << std::endl;
     std::cout << c << std::endl;
+    std::cout << d << std::endl;
 
     std::cout << *rrf << std::endl;
+    std::cout << *scf << std::endl;
+    std::cout << *ppf << std::endl;
 
     try {
         rrf->beSigned(b);
@@ -39,6 +46,12 @@ int main() {
     try {
         rrf->beSigned(d);
         rrf->getExecuted(d);
+    } catch (std::exception & e) {
+        std::cout << e.what() << std::endl;
+    }
+
+    try {
+        scf->beSigned(b);
     } catch (std::exception & e) {
         std::cout << e.what() << std::endl;
     }

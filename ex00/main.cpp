@@ -1,7 +1,4 @@
 #include "Bureaucrat.hpp"
-#include <utility>
-
-#include "Bureaucrat.hpp"
 
 int main() {
     try {
@@ -44,6 +41,20 @@ int main() {
     try {
         // Attempt to create a Bureaucrat with a grade too low
         Bureaucrat invalidLow("InvalidLow", 151);
+    } catch (const Bureaucrat::GradeTooLowException &e) {
+        std::cerr << "Exception when creating InvalidLow: " << e.what() << std::endl;
+    }
+
+    try {
+        // Attempt to create a Bureaucrat with a grade too high
+        Bureaucrat invalidHigh("InvalidHigh", -20);
+    } catch (const Bureaucrat::GradeTooHighException &e) {
+        std::cerr << "Exception when creating InvalidHigh: " << e.what() << std::endl;
+    }
+
+    try {
+        // Attempt to create a Bureaucrat with a grade too low
+        Bureaucrat invalidLow("InvalidLow", 121321213);
     } catch (const Bureaucrat::GradeTooLowException &e) {
         std::cerr << "Exception when creating InvalidLow: " << e.what() << std::endl;
     }

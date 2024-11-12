@@ -1,9 +1,11 @@
-#ifndef AAform_HPP
-# define AAform_HPP
+#ifndef AForm_HPP
+# define AForm_HPP
 
 # include "Bureaucrat.hpp"
 # include <iostream>
 # include <string>
+
+class Bureaucrat;
 
 class Aform {
     private:

@@ -62,9 +62,14 @@ int main() {
             std::cerr << "Exception: " << e.what() << std::endl;
         }
 
-        contract.getExecuted(alice);
-        contract2.getExecuted(bob);
-        contract3.getExecuted(charlie);
+        //contract.getExecuted(alice);
+        //contract2.getExecuted(bob);
+        //contract3.getExecuted(charlie);
+
+        alice.executeForm(contract);
+        bob.executeForm(contract2);
+        charlie.executeForm(contract3);
+
 
     } catch (const Bureaucrat::GradeTooHighException &e) {
         std::cerr << "Bureaucrat exception: " << e.what() << std::endl;

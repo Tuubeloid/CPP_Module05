@@ -15,20 +15,32 @@ Intern &Intern::operator=(const Intern &rhs) {
 
 Intern::~Intern() {}
 
-Aform *Intern::makeForm(std::string formName, std::string target) {
-    Aform *form = nullptr;
+static Aform *makeShrubberyCreationForm(const std::string target) {
+    return new ShrubberyCreationForm(target);
+}
 
-    if (formName == "shrubbery creation") {
-        form = new ShrubberyCreationForm(target);
-        std::cout << "Intern creates " << formName << std::endl;
-    } else if (formName == "robotomy request") {
-        form = new RobotomyRequestForm(target);
-        std::cout << "Intern creates " << formName << std::endl;
-    } else if (formName == "presidential pardon") {
-        form = new PresidentialPardonForm(target);
-        std::cout << "Intern creates " << formName << std::endl;
-    } else {
-        std::cout << "Intern cannot create " << formName << std::endl;
+static Aform *makeRobotomyRequestForm(const std::string target) {
+    return new RobotomyRequestForm(target);
+}
+
+static Aform *makePresidentialPardonForm(const std::string target) {
+    return new PresidentialPardonForm(target);
+}
+
+Aform *Intern::makeForm(std::string formName, std::string trgt) {
+    Aform *form = nullptr;
+    const std::string formtypes[] = {"shrubbery creation", "robotomy request", "presidential pardon"};
+    // create array that points to functions that create the forms
+    Aform *(*formfunctions[])(std::string trgt) = { &makeShrubberyCreationForm, &makeRobotomyRequestForm, &makePresidentialPardonForm };
+    size_t size = sizeof(formtypes) / sizeof(formtypes[0]);
+
+    for (size_t i = 0; i < size; i++) {
+        if (formName == formtypes[i]) {
+            form = formfunctions[i](trgt);
+            std::cout << "Intern creates " << formName << std::endl;
+            return form;
+        }
     }
+    std::cout << "Intern could not create " << formName << std::endl;
     return form;
 }
