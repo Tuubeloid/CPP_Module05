@@ -55,5 +55,8 @@ int main() {
     } catch (std::exception & e) {
         std::cout << e.what() << std::endl;
     }
+    delete rrf;
+    delete scf;
+    delete ppf;
     return 0;
 }

@@ -26,7 +26,7 @@ Bureaucrat &Bureaucrat::operator =(const Bureaucrat &source)
 
 Bureaucrat::~Bureaucrat() {}
 
-void signForm(bool isSigned, std::string formName) const
+void signForm(bool isSigned, std::string formName)
 {
     if (isSigned)
         std::cout << formName << " signs " << formName << std::endl;
